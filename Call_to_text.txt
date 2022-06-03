@@ -1,0 +1,3 @@
+[00:00:00] Bot:  Buongiorno sono futura, come posso aiutarla?
+[00:00:09] User:  prova
+[00:00:09] Bot:  Non sono in grado di aiutarti, chiedimi qualcosa a cui posso rispondere

@@ -44,8 +44,8 @@ def quit():
 
 def change_pw():
     global recognizer, t
-    speak('Prego mi dica il suo codice utente')
-
+    speak('Per cambiare password, dica "sì desidero cambiare la password"')
+    speak('Altrimenti dica "no, interrompi"')
     done = False
 
     while not done:
@@ -54,19 +54,86 @@ def change_pw():
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic)
-                id_code = recognizer.recognize_google(audio, language="it-IT")
+                func_start = recognizer.recognize_google(audio, language="it-IT")
                 curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
-                call_to_text.write(f'[{curr_t}] User:  {id_code}')
+                call_to_text.write(f'[{curr_t}] User:  {func_start}')
                 call_to_text.write("\n")
+            
                 
-                #TO-DO: inviare nuova password con codice id_code
-                
-                speak('Le abbiamo inoltrato sul numero cellulare agganciato al suo UT la nuova password che potrà utilizzare al suo primo accesso, la procedura poi le chiederà di crearne una nuova a suo piacere, grazie per averci contattato')
+                matches = ["desider", "cambiare", "password"]
+
+                if any(x in func_start for x in matches):
+                    speak("Procedo con l'identificazione")
+                    done = True
+                else:
+                    speak("Ho interrotto il cambio, c'è altro che posso fare per lei?")
+                    return
+        except speech_recognition.UnknownValueError:
+            recognizer = speech_recognition.Recognizer()
+            speak('Non ho capito, mi dispiace')
+
+    done = False
+    speak('Pronunci nome cognome')
+    while not done:
+        try:
+            with speech_recognition.Microphone(device_index=1) as mic:
+
+                recognizer.adjust_for_ambient_noise(mic, duration=0.05)
+                audio = recognizer.listen(mic)
+                id_name = recognizer.recognize_google(audio, language="it-IT")
+                curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
+                call_to_text.write(f'[{curr_t}] User:  {id_name}')
+                call_to_text.write("\n")
+                                
                 done = True
         
         except speech_recognition.UnknownValueError:
             recognizer = speech_recognition.Recognizer()
             speak('Non ho capito, mi dispiace')
+    
+    done = False
+    speak('Pronunci la sua data di nascita')
+    while not done:
+        try:
+            with speech_recognition.Microphone(device_index=1) as mic:
+
+                recognizer.adjust_for_ambient_noise(mic, duration=0.05)
+                audio = recognizer.listen(mic)
+                dob = recognizer.recognize_google(audio, language="it-IT")
+                curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
+                call_to_text.write(f'[{curr_t}] User:  {dob}')
+                call_to_text.write("\n")
+                                
+                done = True
+        
+        except speech_recognition.UnknownValueError:
+            recognizer = speech_recognition.Recognizer()
+            speak('Non ho capito, mi dispiace')
+    
+    #TO-DO: cerco nel data-base il num di telefono
+
+    done = False
+    speak('Le abbiamo appena inviato un messaggio sul suo cellulare, pronunci il codice')
+    while not done:
+        time.sleep(2)
+        try:
+            with speech_recognition.Microphone(device_index=1) as mic:
+
+                recognizer.adjust_for_ambient_noise(mic, duration=0.05)
+                audio = recognizer.listen(mic)
+                tmp_code = recognizer.recognize_google(audio, language="it-IT")
+                curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
+                call_to_text.write(f'[{curr_t}] User:  {tmp_code}')
+                call_to_text.write("\n")
+
+                #TO-DO: controllare che il codice sia corretto
+                speak('Le abbiamo appena inviato una nuova password temporanea per accedere al servizio.')
+                speak("Al primo accesso, le verrà richiesto di cambiarla. C'è altro che posso fare per lei?")
+                done = True
+        
+        except speech_recognition.UnknownValueError:
+            recognizer = speech_recognition.Recognizer()
+            speak('Non ho capito, può ripetere?')
 
 def block_card():
     global recognizer, t
@@ -142,9 +209,44 @@ def appointment():
         except speech_recognition.UnknownValueError:
             recognizer = speech_recognition.Recognizer()
             speak('Non ho capito, mi dispiace')
-            
+
+def login_issue():
+    global recognizer, t
+    speak('Se ha problemi di accesso mi dia un attimo per controllare lo stato della sua linea.')
+    speak('Per favore pronunci il suo nome e cognome')
+    
+    done = False
+
+    while not done:
+        try:
+            with speech_recognition.Microphone(device_index=1) as mic:
+
+                
+                recognizer.adjust_for_ambient_noise(mic, duration=0.05)
+                audio = recognizer.listen(mic)
+                id_name = recognizer.recognize_google(audio, language="it-IT")
+                curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
+
+                call_to_text.write(f'[{curr_t}] User:  {id_name}')
+                call_to_text.write("\n")
+                
+                #TO-DO: inviare nuova password con codice id_code
+                
+                speak('Piacere signor ' + id_name  + ', sto controllando lo stato della sua linea')
+                done = True
+        
+        except speech_recognition.UnknownValueError:
+            recognizer = speech_recognition.Recognizer()
+            speak('Non ho capito, mi dispiace. Può ripetere?')
+
+    #TO-DO: elaborazione della richiesta --> è necessario cambiare la password
+    speak('Sembra che sia necessario resettare la password')
+    change_pw()
+
+
+
 def timetables():
-    speak("La banca è aperta dal lunedì al venerdì dalle 8:20 alle 13:20")
+    speak("La banca è aperta dal lunedì al venerdì dalle 8:20 alle 19:20")
 
 def none():
     speak("Non sono in grado di aiutarti, chiedimi qualcosa a cui posso rispondere")
@@ -154,6 +256,7 @@ def thanks ():
     speak("è un piacere aiutarla, c'è altro che posso fare per lei?")
 
 mappings = {
+    'login_issue': login_issue,
     'thanks': thanks,
     'none': none,
     'appointment': appointment,
@@ -180,7 +283,7 @@ while True:
             
             recognizer.adjust_for_ambient_noise(mic, duration=0.05)
             audio = recognizer.listen(mic)
-            print(type(audio))
+            # print(type(audio))
             
             message = recognizer.recognize_google(audio, language="it-IT")
             curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))

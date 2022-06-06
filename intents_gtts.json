@@ -33,6 +33,11 @@
       "responses": [""]
       },
 
+    {"tag": "login_issue",
+      "patterns": ["non riesco ad accedere", "ho problemi di accesso", "non riesco ad entrare in relax banking","non riesco a fare il login"],
+      "responses": [""]
+      },
+
     {"tag": "none",
       "patterns": [""],
       "responses": [""]

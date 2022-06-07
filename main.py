@@ -257,14 +257,14 @@ def thanks ():
 
 mappings = {
     'login_issue': login_issue,
-    'thanks': thanks,
-    'none': none,
     'appointment': appointment,
     'timetables': timetables,
     'block_card':block_card,
     'change_pw': change_pw,
-    'greeting': hello,
+    
     'exit' : quit,
+    'thanks': thanks,
+    'none': none,
     }
 
 
@@ -272,6 +272,9 @@ assistant = GenericAssistant('intents_gtts.json', intent_methods=mappings)
 assistant.train_model()
 
 # assistant.request("")
+
+# for manually deciding when to start the call
+input = input()
 
 t = time.time()
 speak('Buongiorno sono futura, come posso aiutarla?')

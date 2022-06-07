@@ -1,9 +1,4 @@
 {"intents": [
-    {"tag": "greeting",
-      "patterns": ["Ciao", "Eccomi", "Buongiorno", "Pronto", "Buonasera", "Salve"],
-      "responses": [],
-      "context_set": ""
-    },
 
     {"tag": "exit",
       "patterns": ["Devo andare", "Esci", "Arrivederci", "Buon proseguimento"],
@@ -11,8 +6,7 @@
     },
 
     {"tag": "change_pw",
-      "patterns": ["cambia password" , "posso cambiare la password?" , "ho problemi con la password",
-        "non riesco ad entrare nel sito", "ho la password bloccata" ],
+      "patterns": ["cambia password" , "posso cambiare la password?" , "ho problemi con la password", "ho la password bloccata" ],
       "responses": [""]
       },
     
@@ -34,7 +28,7 @@
       },
 
     {"tag": "login_issue",
-      "patterns": ["non riesco ad accedere", "ho problemi di accesso", "non riesco ad entrare in relax banking","non riesco a fare il login"],
+      "patterns": ["non riesco ad accedere al sito", "ho problemi di accesso", "non riesco ad entrare in relax banking","non riesco a fare il login"],
       "responses": [""]
       },
 

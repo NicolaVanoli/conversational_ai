@@ -154,7 +154,7 @@ def block_card():
                 
                 #TO-DO: inviare nuova password con codice id_code
                 
-                speak('Abbiamo provveduto a bloccare la sua carta e ad emetterne una nuova, che verrà spedita alla sua filiale di riferimento.')
+                speak("Abbiamo provveduto a bloccare la sua carta e ad emetterne una nuova, che verrà spedita alla sua filiale di riferimento. C'è altro che posso fare per lei?")
                 done = True
         
         except speech_recognition.UnknownValueError:
@@ -202,7 +202,7 @@ def appointment():
                 call_to_text.write(f'[{curr_t}] User:  {timetable}')
                 call_to_text.write("\n")
                 timetable = ''.join(c for c in timetable if c.isdigit())
-                ans = 'Se il suo gestore alle ' + timetable + ' è libero, fisso un appuntamento a suo nome'
+                ans = "Se il suo gestore alle " + timetable + " è libero, fisso un appuntamento a suo nome.  C'è altro che posso fare per lei?"
                 speak(ans)
                 done = True
         
@@ -246,14 +246,15 @@ def login_issue():
 
 
 def timetables():
-    speak("La banca è aperta dal lunedì al venerdì dalle 8:20 alle 19:20")
+    speak("La banca è aperta dal lunedì al venerdì dalle 8:20 alle 19:20. C'è altro che posso fare per lei?")
 
 def none():
     speak("Non sono in grado di aiutarti, chiedimi qualcosa a cui posso rispondere")
 
 
-def thanks ():
-    speak("è un piacere aiutarla, c'è altro che posso fare per lei?")
+def job_ended ():
+    speak("Allora la saluto")
+    quit()
 
 mappings = {
     'login_issue': login_issue,
@@ -263,7 +264,7 @@ mappings = {
     'change_pw': change_pw,
     
     'exit' : quit,
-    'thanks': thanks,
+    'job_ended': job_ended,
     'none': none,
     }
 

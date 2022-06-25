@@ -13,10 +13,10 @@ import time
 
 # open a (new) file to write
 call_to_text = open("Call_to_text.txt", "w")
-
+issues = []
 
 def speak(text):
-    global t
+    global issues, t
     
     t1 = time.strftime("%H:%M:%S", time.gmtime(int(time.time()- t)))
 
@@ -38,14 +38,19 @@ def hello():
     
 
 def quit():
+    global issues
     speak('Ciao e buona giornata')
+    call_to_text.write("\n")
+    call_to_text.write("\n")
+    call_to_text.write(f'SONO STATE RISOLTE LE SEGUENTI PROBLEMATICHE: {issues}')
+    call_to_text.write("\n")
     call_to_text.close()
     sys.exit(0)
 
 def change_pw():
-    global recognizer, t
-    speak('Per cambiare password, dica "sì desidero cambiare la password"')
-    speak('Altrimenti dica "no, interrompi"')
+    global issues, recognizer, t
+    speak('Per cambiare password, dica "sì desidero cambiare la password" Altrimenti dica "no, interrompi"')
+    # speak('Altrimenti dica "no, interrompi"')
     done = False
 
     while not done:
@@ -70,7 +75,7 @@ def change_pw():
                     return
         except speech_recognition.UnknownValueError:
             recognizer = speech_recognition.Recognizer()
-            speak('Non ho capito, mi dispiace')
+            speak('Non ho capito, può ripetere?')
 
     done = False
     speak('Pronunci nome cognome')
@@ -127,6 +132,7 @@ def change_pw():
                 call_to_text.write("\n")
 
                 #TO-DO: controllare che il codice sia corretto
+                issues.append('Cambio pw')
                 speak('Le abbiamo appena inviato una nuova password temporanea per accedere al servizio.')
                 speak("Al primo accesso, le verrà richiesto di cambiarla. C'è altro che posso fare per lei?")
                 done = True
@@ -136,7 +142,7 @@ def change_pw():
             speak('Non ho capito, può ripetere?')
 
 def block_card():
-    global recognizer, t
+    global issues, recognizer, t
     speak('Se desidera bloccare la sua carta pronunci la sua data di nascita')
 
     done = False
@@ -153,7 +159,7 @@ def block_card():
                 call_to_text.write("\n")
                 
                 #TO-DO: inviare nuova password con codice id_code
-                
+                issues.append('Blocco carta')
                 speak("Abbiamo provveduto a bloccare la sua carta e ad emetterne una nuova, che verrà spedita alla sua filiale di riferimento. C'è altro che posso fare per lei?")
                 done = True
         
@@ -163,7 +169,7 @@ def block_card():
 
 
 def appointment():
-    global recognizer, t
+    global issues, recognizer, t
     speak('Prima di fissare un appuntamento ci dica il suo nome e cognome per indirizzarla al suo gestore')
 
     done = False
@@ -204,6 +210,7 @@ def appointment():
                 timetable = ''.join(c for c in timetable if c.isdigit())
                 ans = "Se il suo gestore alle " + timetable + " è libero, fisso un appuntamento a suo nome.  C'è altro che posso fare per lei?"
                 speak(ans)
+                issues.append('Apuntamento')
                 done = True
         
         except speech_recognition.UnknownValueError:
@@ -211,7 +218,7 @@ def appointment():
             speak('Non ho capito, mi dispiace')
 
 def login_issue():
-    global recognizer, t
+    global issues, recognizer, t
     speak('Se ha problemi di accesso mi dia un attimo per controllare lo stato della sua linea.')
     speak('Per favore pronunci il suo nome e cognome')
     
@@ -240,15 +247,20 @@ def login_issue():
             speak('Non ho capito, mi dispiace. Può ripetere?')
 
     #TO-DO: elaborazione della richiesta --> è necessario cambiare la password
+    issues.append('Problema Login')
     speak('Sembra che sia necessario resettare la password')
     change_pw()
 
 
 
 def timetables():
+    global issues
+    issues.append('Info orari')
     speak("La banca è aperta dal lunedì al venerdì dalle 8:20 alle 19:20. C'è altro che posso fare per lei?")
 
 def none():
+    global issues
+    issues.append('Problma Sconosciuto')
     speak("Non sono in grado di aiutarti, chiedimi qualcosa a cui posso rispondere")
 
 

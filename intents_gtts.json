@@ -18,7 +18,7 @@
       },
 
     {"tag": "timetables",
-      "patterns": ["la banca è aperta?", "a che ora apre l'ufficio?"," a che ora siete aperti?","che orari fa la banca?", "a che ora apre / chiude la banca?", "quando posso venire in banca?","la banca è aperta di sabato?"],
+      "patterns": ["la banca / l'ufficio è aperta?", "a che ora apre l'ufficio?"," a che ora siete aperti?","che orari fa la banca / l'ufficio?", "a che ora apre / chiude la banca / gli uffici?", "quando posso venire in banca?","la banca è aperta di sabato?"],
       "responses": [""]
       },
   
@@ -33,12 +33,12 @@
       },
 
     {"tag": "card_enable",
-      "patterns": ["non riesco più a pagare online","vorrei abilitare le mie carte al pagamento online"],
+      "patterns": ["vorrei abilitare le mie carte al pagamento online","ho bisogno di poter pagare online","vorrei abilitare la carta al pagamento"],
       "responses": [""]
       },
 
     {"tag": "change_residence_data",
-      "patterns": ["devo cambiare residenza","ho cambiato casa / indirizzo"],
+      "patterns": ["devo cambiare residenza","ho cambiato casa / indirizzo", "avrei bisogno di cambiare l'indirizzo di casa","dovrei modificare l'indirizzo"],
       "responses": [""]
       },
     

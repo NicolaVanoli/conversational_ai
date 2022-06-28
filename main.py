@@ -251,6 +251,25 @@ def login_issue():
     speak('Sembra che sia necessario resettare la password')
     change_pw()
 
+def card_services_purchase():
+    global issues
+    issues.append("Acquisto servizio")
+    speak("Per acquistare un servizio seguire le procedure. C'è altro che posso fare per lei?")
+
+def claim_report():
+    global issues
+    issues.append("denuncia sinistro")
+    speak("Per denunciare un sinistro seguire le procedure. C'è altro che posso fare per lei?")
+
+def change_residence_data():
+    global issues
+    issues.append("cambio dati residenza")
+    speak("Per cambiare i dati sulla residenza seguire le procedure. C'è altro che posso fare per lei?")
+
+def card_enable():
+    global issues
+    issues.append("attivazione carta")
+    speak("Per attivare la carta seguire le procedure. C'è altro che posso fare per lei?")
 
 
 def timetables():
@@ -269,6 +288,10 @@ def job_ended ():
     quit()
 
 mappings = {
+    'card_services_purchase': card_services_purchase,
+    'claim_report': claim_report,
+    'change_residence_data': change_residence_data,
+    'card_enable': card_enable,
     'login_issue': login_issue,
     'appointment': appointment,
     'timetables': timetables,

@@ -43,7 +43,7 @@
       },
     
     {"tag": "claim_report",
-      "patterns": ["ho subito un sinistro","devo denunciare un sinistro assicurativo","ho subito un danno alla casa"],
+      "patterns": ["ho subito un sinistro","devo denunciare un sinistro / incidente  assicurativo","ho subito un danno alla casa"],
       "responses": [""]
       },
 

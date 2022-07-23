@@ -9,10 +9,19 @@ import os
 
 import time
 
+# create and open a new file named differently from the previous
+def uniquify(path):
+    filename, extension = os.path.splitext(path)
+    counter = 1
 
+    while os.path.exists(path):
+        path = filename + "_" + str(counter)  + extension
+        counter += 1
+
+    return path
 
 # open a (new) file to write
-call_to_text = open("Call_to_text.txt", "w")
+call_to_text = open(uniquify("transcriptions/tr.txt"), "w")
 issues = []
 
 def speak(text):
@@ -55,7 +64,7 @@ def change_pw():
 
     while not done:
         try:
-            with speech_recognition.Microphone(device_index=2) as mic:
+            with speech_recognition.Microphone(device_index=1) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic)
@@ -81,7 +90,7 @@ def change_pw():
     speak('Pronunci nome cognome')
     while not done:
         try:
-            with speech_recognition.Microphone(device_index=2) as mic:
+            with speech_recognition.Microphone(device_index=1) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic)
@@ -100,7 +109,7 @@ def change_pw():
     speak('Pronunci la sua data di nascita')
     while not done:
         try:
-            with speech_recognition.Microphone(device_index=2) as mic:
+            with speech_recognition.Microphone(device_index=1) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic)
@@ -122,7 +131,7 @@ def change_pw():
     while not done:
         # time.sleep(2)
         try:
-            with speech_recognition.Microphone(device_index=2) as mic:
+            with speech_recognition.Microphone(device_index=1) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic)
@@ -149,7 +158,7 @@ def block_card():
 
     while not done:
         try:
-            with speech_recognition.Microphone(device_index=2) as mic:
+            with speech_recognition.Microphone(device_index=1) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic)
@@ -176,7 +185,7 @@ def appointment():
 
     while not done:
         try:
-            with speech_recognition.Microphone(device_index=2) as mic:
+            with speech_recognition.Microphone(device_index=1) as mic:
 
                 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
@@ -199,7 +208,7 @@ def appointment():
     done = False
     while not done:
         try:
-            with speech_recognition.Microphone(device_index=2) as mic:
+            with speech_recognition.Microphone(device_index=1) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic)
@@ -226,7 +235,7 @@ def login_issue():
 
     while not done:
         try:
-            with speech_recognition.Microphone(device_index=2) as mic:
+            with speech_recognition.Microphone(device_index=1) as mic:
 
                 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
@@ -318,7 +327,7 @@ speak('Buongiorno sono futura, come posso aiutarla?')
 while True:
     try:
         
-        with speech_recognition.Microphone(device_index=2) as mic:
+        with speech_recognition.Microphone(device_index=1) as mic:
             
             recognizer.adjust_for_ambient_noise(mic, duration=0.05)
             audio = recognizer.listen(mic)

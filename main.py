@@ -9,10 +9,26 @@ import os
 
 import time
 
+
+import keyboard
+import sys
+
+
+def kb():
+    while True:
+        if keyboard.is_pressed("a"):
+            print("A key was pressed")
+            quit()
+
+
+
+
+counter = 1
 # create and open a new file named differently from the previous
 def uniquify(path):
+    global counter
     filename, extension = os.path.splitext(path)
-    counter = 1
+    # counter = 1
 
     while os.path.exists(path):
         path = filename + "_" + str(counter)  + extension
@@ -22,10 +38,16 @@ def uniquify(path):
 
 # open a (new) file to write
 call_to_text = open(uniquify("transcriptions/tr.txt"), "w")
-issues = []
+db_csv = open("transcriptions/database.csv", 'a', newline='')
+# infos_keys = [Index, Name, DoB, change_pw, block_card, timetables, appointment, login_issue,card_enable, change_residence_data, claim_report, card_services_purchase
+# ]
+infos = [0]*12
+infos[0] = counter - 1 
+infos[1] = 'Unknown'
+infos[2] = 'Unknown'
 
 def speak(text):
-    global issues, t
+    global infos, t
     
     t1 = time.strftime("%H:%M:%S", time.gmtime(int(time.time()- t)))
 
@@ -47,17 +69,14 @@ def hello():
     
 
 def quit():
-    global issues
+    global infos
     speak('Ciao e buona giornata')
-    call_to_text.write("\n")
-    call_to_text.write("\n")
-    call_to_text.write(f'SONO STATE RISOLTE LE SEGUENTI PROBLEMATICHE: {issues}')
-    call_to_text.write("\n")
+    db_csv.write(f'{str(infos)[1:-1]}\n')
     call_to_text.close()
     sys.exit(0)
 
 def change_pw():
-    global issues, recognizer, t
+    global infos, recognizer, t
     speak('Per cambiare password, dica "sì desidero cambiare la password" Altrimenti dica "no, interrompi"')
     # speak('Altrimenti dica "no, interrompi"')
     done = False
@@ -117,7 +136,8 @@ def change_pw():
                 curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
                 call_to_text.write(f'[{curr_t}] User:  {dob}')
                 call_to_text.write("\n")
-                                
+                infos[2] = dob
+                      
                 done = True
         
         except speech_recognition.UnknownValueError:
@@ -141,7 +161,7 @@ def change_pw():
                 call_to_text.write("\n")
 
                 #TO-DO: controllare che il codice sia corretto
-                issues.append('Cambio pw')
+                infos[3] = 1
                 speak('Le abbiamo appena inviato una nuova password temporanea per accedere al servizio.')
                 speak("Al primo accesso, le verrà richiesto di cambiarla. C'è altro che posso fare per lei?")
                 done = True
@@ -151,7 +171,7 @@ def change_pw():
             speak('Non ho capito, può ripetere?')
 
 def block_card():
-    global issues, recognizer, t
+    global infos, recognizer, t
     speak('Se desidera bloccare la sua carta pronunci la sua data di nascita')
 
     done = False
@@ -168,7 +188,8 @@ def block_card():
                 call_to_text.write("\n")
                 
                 #TO-DO: inviare nuova password con codice id_code
-                issues.append('Blocco carta')
+                infos[4] = 1
+
                 speak("Abbiamo provveduto a bloccare la sua carta e ad emetterne una nuova, che verrà spedita alla sua filiale di riferimento. C'è altro che posso fare per lei?")
                 done = True
         
@@ -178,7 +199,7 @@ def block_card():
 
 
 def appointment():
-    global issues, recognizer, t
+    global infos, recognizer, t
     speak('Prima di fissare un appuntamento ci dica il suo nome e cognome per indirizzarla al suo gestore')
 
     done = False
@@ -196,6 +217,7 @@ def appointment():
                 call_to_text.write(f'[{curr_t}] User:  {id_name}')
                 call_to_text.write("\n")
                 
+                infos[1] = id_name
                 #TO-DO: inviare nuova password con codice id_code
                 
                 speak('Piacere signor ' + id_name  + ',quando desidera fissare un appuntamento col suo gestore?')
@@ -219,7 +241,7 @@ def appointment():
                 timetable = ''.join(c for c in timetable if c.isdigit())
                 ans = "Se il suo gestore alle " + timetable + " è libero, fisso un appuntamento a suo nome.  C'è altro che posso fare per lei?"
                 speak(ans)
-                issues.append('Apuntamento')
+                infos[5] = 1
                 done = True
         
         except speech_recognition.UnknownValueError:
@@ -227,7 +249,7 @@ def appointment():
             speak('Non ho capito, mi dispiace')
 
 def login_issue():
-    global issues, recognizer, t
+    global infos, recognizer, t
     speak('Se ha problemi di accesso mi dia un attimo per controllare lo stato della sua linea.')
     speak('Per favore pronunci il suo nome e cognome')
     
@@ -245,7 +267,8 @@ def login_issue():
 
                 call_to_text.write(f'[{curr_t}] User:  {id_name}')
                 call_to_text.write("\n")
-                
+                infos[1] = id_name
+
                 #TO-DO: inviare nuova password con codice id_code
                 
                 speak('Piacere signor ' + id_name  + ', sto controllando lo stato della sua linea')
@@ -256,39 +279,39 @@ def login_issue():
             speak('Non ho capito, mi dispiace. Può ripetere?')
 
     #TO-DO: elaborazione della richiesta --> è necessario cambiare la password
-    issues.append('Problema Login')
+    infos[7] = 1
     speak('Sembra che sia necessario resettare la password')
     change_pw()
 
 def card_services_purchase():
-    global issues
-    issues.append("Acquisto servizio")
+    global infos
+    infos[10] = 1
     speak("Per acquistare un servizio seguire le procedure. C'è altro che posso fare per lei?")
 
 def claim_report():
-    global issues
-    issues.append("denuncia sinistro")
+    global infos
+    infos[9] = 1
     speak("Per denunciare un sinistro seguire le procedure. C'è altro che posso fare per lei?")
 
 def change_residence_data():
-    global issues
-    issues.append("cambio dati residenza")
+    global infos
+    infos[8] = 1
     speak("Per cambiare i dati sulla residenza seguire le procedure. C'è altro che posso fare per lei?")
 
 def card_enable():
-    global issues
-    issues.append("attivazione carta")
+    global infos
+    infos[7] = 1
     speak("Per attivare la carta seguire le procedure. C'è altro che posso fare per lei?")
 
 
 def timetables():
-    global issues
-    issues.append('Info orari')
+    global infos
+    infos[4] = 1
     speak("La banca è aperta dal lunedì al venerdì dalle 8:20 alle 19:20. C'è altro che posso fare per lei?")
 
 def none():
-    global issues
-    issues.append('Problma Sconosciuto')
+    global infos
+    infos[11] = 1
     speak("Non sono in grado di aiutarti, chiedimi qualcosa a cui posso rispondere")
 
 
@@ -329,6 +352,9 @@ while True:
         
         with speech_recognition.Microphone(device_index=1) as mic:
             
+            if keyboard.is_pressed('q'):
+                quit()
+
             recognizer.adjust_for_ambient_noise(mic, duration=0.05)
             audio = recognizer.listen(mic)
             # print(type(audio))

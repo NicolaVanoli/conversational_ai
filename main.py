@@ -14,19 +14,12 @@ import keyboard
 import sys
 
 
-def kb():
-    while True:
-        if keyboard.is_pressed("a"):
-            print("A key was pressed")
-            quit()
-
-
-
-
+id_name = None
+dob = None
 counter = 1
 # create and open a new file named differently from the previous
 def uniquify(path):
-    global counter
+    global id_name,dob, counter
     filename, extension = os.path.splitext(path)
     # counter = 1
 
@@ -47,7 +40,7 @@ infos[1] = 'Unknown'
 infos[2] = 'Unknown'
 
 def speak(text):
-    global infos, t
+    global id_name,dob, infos, t
     
     t1 = time.strftime("%H:%M:%S", time.gmtime(int(time.time()- t)))
 
@@ -69,14 +62,14 @@ def hello():
     
 
 def quit():
-    global infos
+    global id_name,dob, infos
     speak('Ciao e buona giornata')
     db_csv.write(f'{str(infos)[1:-1]}\n')
     call_to_text.close()
     sys.exit(0)
 
 def change_pw():
-    global infos, recognizer, t
+    global id_name,dob, infos, recognizer, t
     speak('Per cambiare password, dica "sì desidero cambiare la password" Altrimenti dica "no, interrompi"')
     # speak('Altrimenti dica "no, interrompi"')
     done = False
@@ -106,47 +99,52 @@ def change_pw():
             speak('Non ho capito, può ripetere?')
 
     done = False
-    speak('Pronunci nome cognome')
-    while not done:
-        try:
-            with speech_recognition.Microphone(device_index=1) as mic:
 
-                recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                audio = recognizer.listen(mic)
-                id_name = recognizer.recognize_google(audio, language="it-IT")
-                curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
-                call_to_text.write(f'[{curr_t}] User:  {id_name}')
-                call_to_text.write("\n")
-                                
-                done = True
-        
-        except speech_recognition.UnknownValueError:
-            recognizer = speech_recognition.Recognizer()
-            speak('Non ho capito, mi dispiace')
+    if id_name is None:
+        speak('Pronunci nome cognome')
+        while not done:
+            try:
+                with speech_recognition.Microphone(device_index=1) as mic:
+
+                    recognizer.adjust_for_ambient_noise(mic, duration=0.05)
+                    audio = recognizer.listen(mic)
+                    id_name = recognizer.recognize_google(audio, language="it-IT")
+                    curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
+                    call_to_text.write(f'[{curr_t}] User:  {id_name}')
+                    call_to_text.write("\n")
+                    infos[0] = id_name
+
+                    done = True
+            
+            except speech_recognition.UnknownValueError:
+                recognizer = speech_recognition.Recognizer()
+                speak('Non ho capito, mi dispiace')
     
-    done = False
-    speak('Pronunci la sua data di nascita')
-    while not done:
-        try:
-            with speech_recognition.Microphone(device_index=1) as mic:
+        done = False
 
-                recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                audio = recognizer.listen(mic)
-                dob = recognizer.recognize_google(audio, language="it-IT")
-                curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
-                call_to_text.write(f'[{curr_t}] User:  {dob}')
-                call_to_text.write("\n")
-                infos[2] = dob
-                      
-                done = True
+    if dob is None:
+        speak('Pronunci la sua data di nascita')
+        while not done:
+            try:
+                with speech_recognition.Microphone(device_index=1) as mic:
+
+                    recognizer.adjust_for_ambient_noise(mic, duration=0.05)
+                    audio = recognizer.listen(mic)
+                    dob = recognizer.recognize_google(audio, language="it-IT")
+                    curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
+                    call_to_text.write(f'[{curr_t}] User:  {dob}')
+                    call_to_text.write("\n")
+                    infos[2] = dob
+                        
+                    done = True
+            
+            except speech_recognition.UnknownValueError:
+                recognizer = speech_recognition.Recognizer()
+                speak('Non ho capito, mi dispiace')
         
-        except speech_recognition.UnknownValueError:
-            recognizer = speech_recognition.Recognizer()
-            speak('Non ho capito, mi dispiace')
-    
-    #TO-DO: cerco nel data-base il num di telefono
+        #TO-DO: cerco nel data-base il num di telefono
 
-    done = False
+        done = False
     speak('Le abbiamo appena inviato un messaggio sul suo cellulare, pronunci il codice')
     while not done:
         # time.sleep(2)
@@ -171,7 +169,7 @@ def change_pw():
             speak('Non ho capito, può ripetere?')
 
 def block_card():
-    global infos, recognizer, t
+    global id_name,dob, infos, recognizer, t
     speak('Se desidera bloccare la sua carta pronunci la sua data di nascita')
 
     done = False
@@ -199,7 +197,7 @@ def block_card():
 
 
 def appointment():
-    global infos, recognizer, t
+    global id_name,dob, infos, recognizer, t
     speak('Prima di fissare un appuntamento ci dica il suo nome e cognome per indirizzarla al suo gestore')
 
     done = False
@@ -249,34 +247,35 @@ def appointment():
             speak('Non ho capito, mi dispiace')
 
 def login_issue():
-    global infos, recognizer, t
+    global id_name,dob, infos, recognizer, t
     speak('Se ha problemi di accesso mi dia un attimo per controllare lo stato della sua linea.')
-    speak('Per favore pronunci il suo nome e cognome')
+    if id_name is None:
+        speak('Per favore pronunci il suo nome e cognome')
     
-    done = False
+        done = False
 
-    while not done:
-        try:
-            with speech_recognition.Microphone(device_index=1) as mic:
+        while not done:
+            try:
+                with speech_recognition.Microphone(device_index=1) as mic:
 
-                
-                recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                audio = recognizer.listen(mic)
-                id_name = recognizer.recognize_google(audio, language="it-IT")
-                curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
+                    
+                    recognizer.adjust_for_ambient_noise(mic, duration=0.05)
+                    audio = recognizer.listen(mic)
+                    id_name = recognizer.recognize_google(audio, language="it-IT")
+                    curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
 
-                call_to_text.write(f'[{curr_t}] User:  {id_name}')
-                call_to_text.write("\n")
-                infos[1] = id_name
+                    call_to_text.write(f'[{curr_t}] User:  {id_name}')
+                    call_to_text.write("\n")
+                    infos[1] = id_name
 
-                #TO-DO: inviare nuova password con codice id_code
-                
-                speak('Piacere signor ' + id_name  + ', sto controllando lo stato della sua linea')
-                done = True
-        
-        except speech_recognition.UnknownValueError:
-            recognizer = speech_recognition.Recognizer()
-            speak('Non ho capito, mi dispiace. Può ripetere?')
+                    #TO-DO: inviare nuova password con codice id_code
+                    
+                    speak('Piacere signor ' + id_name  + ', sto controllando lo stato della sua linea')
+                    done = True
+            
+            except speech_recognition.UnknownValueError:
+                recognizer = speech_recognition.Recognizer()
+                speak('Non ho capito, mi dispiace. Può ripetere?')
 
     #TO-DO: elaborazione della richiesta --> è necessario cambiare la password
     infos[7] = 1
@@ -284,33 +283,33 @@ def login_issue():
     change_pw()
 
 def card_services_purchase():
-    global infos
+    global id_name,dob, infos
     infos[11] = 1
     speak("Per acquistare un servizio seguire le procedure. C'è altro che posso fare per lei?")
 
 def claim_report():
-    global infos
+    global id_name,dob, infos
     infos[10] = 1
     speak("Per denunciare un sinistro seguire le procedure. C'è altro che posso fare per lei?")
 
 def change_residence_data():
-    global infos
+    global id_name,dob, infos
     infos[9] = 1
     speak("Per cambiare i dati sulla residenza seguire le procedure. C'è altro che posso fare per lei?")
 
 def card_enable():
-    global infos
+    global id_name,dob, infos
     infos[8] = 1
     speak("Per attivare la carta seguire le procedure. C'è altro che posso fare per lei?")
 
 
 def timetables():
-    global infos
+    global id_name,dob, infos
     infos[5] = 1
     speak("La banca è aperta dal lunedì al venerdì dalle 8:20 alle 19:20. C'è altro che posso fare per lei?")
 
 def none():
-    global infos
+    global id_name,dob, infos
     infos[12] = 1
     speak("Non sono in grado di aiutarti, chiedimi qualcosa a cui posso rispondere")
 

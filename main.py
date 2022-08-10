@@ -34,7 +34,7 @@ call_to_text = open(uniquify("transcriptions/tr.txt"), "w")
 db_csv = open("transcriptions/database.csv", 'a', newline='')
 # infos_keys = [Index, Name, DoB, change_pw, block_card, timetables, appointment, login_issue,card_enable, change_residence_data, claim_report, card_services_purchase
 # ]
-infos = [0]*13
+infos = ['No']*13
 infos[0] = counter - 1 
 infos[1] = 'Unknown'
 infos[2] = 'Unknown'
@@ -159,7 +159,7 @@ def change_pw():
                 call_to_text.write("\n")
 
                 #TO-DO: controllare che il codice sia corretto
-                infos[3] = 1
+                infos[3] = 'Yes'
                 speak('Le abbiamo appena inviato una nuova password temporanea per accedere al servizio.')
                 speak("Al primo accesso, le verrà richiesto di cambiarla. C'è altro che posso fare per lei?")
                 done = True
@@ -186,7 +186,7 @@ def block_card():
                 call_to_text.write("\n")
                 
                 #TO-DO: inviare nuova password con codice id_code
-                infos[4] = 1
+                infos[4] = 'Yes'
 
                 speak("Abbiamo provveduto a bloccare la sua carta e ad emetterne una nuova, che verrà spedita alla sua filiale di riferimento. C'è altro che posso fare per lei?")
                 done = True
@@ -239,7 +239,7 @@ def appointment():
                 timetable = ''.join(c for c in timetable if c.isdigit())
                 ans = "Se il suo gestore alle " + timetable + " è libero, fisso un appuntamento a suo nome.  C'è altro che posso fare per lei?"
                 speak(ans)
-                infos[6] = 1
+                infos[6] = 'Yes'
                 done = True
         
         except speech_recognition.UnknownValueError:
@@ -278,40 +278,40 @@ def login_issue():
                 speak('Non ho capito, mi dispiace. Può ripetere?')
 
     #TO-DO: elaborazione della richiesta --> è necessario cambiare la password
-    infos[7] = 1
+    infos[7] = 'Yes'
     speak('Sembra che sia necessario resettare la password')
     change_pw()
 
 def card_services_purchase():
     global id_name,dob, infos
-    infos[11] = 1
+    infos[11] = 'Yes'
     speak("Per acquistare un servizio seguire le procedure. C'è altro che posso fare per lei?")
 
 def claim_report():
     global id_name,dob, infos
-    infos[10] = 1
+    infos[10] = 'Yes'
     speak("Per denunciare un sinistro seguire le procedure. C'è altro che posso fare per lei?")
 
 def change_residence_data():
     global id_name,dob, infos
-    infos[9] = 1
+    infos[9] = 'Yes'
     speak("Per cambiare i dati sulla residenza seguire le procedure. C'è altro che posso fare per lei?")
 
 def card_enable():
     global id_name,dob, infos
-    infos[8] = 1
+    infos[8] = 'Yes'
     speak("Per attivare la carta seguire le procedure. C'è altro che posso fare per lei?")
 
 
 def timetables():
     global id_name,dob, infos
-    infos[5] = 1
+    infos[5] = 'Yes'
     speak("La banca è aperta dal lunedì al venerdì dalle 8:20 alle 19:20. C'è altro che posso fare per lei?")
 
 def none():
     global id_name,dob, infos
-    infos[12] = 1
-    speak("Non sono in grado di aiutarti, chiedimi qualcosa a cui posso rispondere")
+    infos[12] = 'Yes'
+    speak("Non sono in grado di aiutarti, c'è altro che posso fare per te?")
 
 
 def job_ended ():
@@ -369,6 +369,9 @@ while True:
         assistant.request(message)
 
     except speech_recognition.UnknownValueError:
+        if keyboard.is_pressed('q'):
+                quit()
+
         time.sleep(3)
         speak("Se ha detto qualcosa non l'ho sentita, puo' ripetere?")
         recognizer = speech_recognition.Recognizer()

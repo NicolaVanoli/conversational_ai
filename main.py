@@ -198,53 +198,76 @@ def block_card():
 
 def appointment():
     global id_name,dob, infos, recognizer, t
-    speak('Prima di fissare un appuntamento ci dica il suo nome e cognome per indirizzarla al suo gestore')
+    if infos[1] == 'Unknown':
+        speak('Prima di fissare un appuntamento ci dica il suo nome e cognome per indirizzarla al suo gestore')
 
-    done = False
+        done = False
 
-    while not done:
-        try:
-            with speech_recognition.Microphone(device_index=1) as mic:
+        while not done:
+            try:
+                with speech_recognition.Microphone(device_index=1) as mic:
 
-                
-                recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                audio = recognizer.listen(mic)
-                id_name = recognizer.recognize_google(audio, language="it-IT")
-                curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
+                    
+                    recognizer.adjust_for_ambient_noise(mic, duration=0.05)
+                    audio = recognizer.listen(mic)
+                    id_name = recognizer.recognize_google(audio, language="it-IT")
+                    curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
 
-                call_to_text.write(f'[{curr_t}] User:  {id_name}')
-                call_to_text.write("\n")
-                
-                infos[1] = id_name
-                #TO-DO: inviare nuova password con codice id_code
-                
-                speak('Piacere signor ' + id_name  + ',quando desidera fissare un appuntamento col suo gestore?')
-                done = True
+                    call_to_text.write(f'[{curr_t}] User:  {id_name}')
+                    call_to_text.write("\n")
+                    
+                    infos[1] = id_name
+                    #TO-DO: inviare nuova password con codice id_code
+                    
+                    speak('Piacere signor ' + id_name  + ',quando desidera fissare un appuntamento col suo gestore?')
+                    done = True
+            
+            except speech_recognition.UnknownValueError:
+                recognizer = speech_recognition.Recognizer()
+                speak('Non ho capito, mi dispiace. Può ripetere?')
         
-        except speech_recognition.UnknownValueError:
-            recognizer = speech_recognition.Recognizer()
-            speak('Non ho capito, mi dispiace. Può ripetere?')
-    
-    done = False
-    while not done:
-        try:
-            with speech_recognition.Microphone(device_index=1) as mic:
+        done = False
+        while not done:
+            try:
+                with speech_recognition.Microphone(device_index=1) as mic:
 
-                recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                audio = recognizer.listen(mic)
-                timetable = recognizer.recognize_google(audio, language="it-IT")
-                curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
-                call_to_text.write(f'[{curr_t}] User:  {timetable}')
-                call_to_text.write("\n")
-                timetable = ''.join(c for c in timetable if c.isdigit())
-                ans = "Se il suo gestore alle " + timetable + " è libero, fisso un appuntamento a suo nome.  C'è altro che posso fare per lei?"
-                speak(ans)
-                infos[6] = 'Yes'
-                done = True
-        
-        except speech_recognition.UnknownValueError:
-            recognizer = speech_recognition.Recognizer()
-            speak('Non ho capito, mi dispiace')
+                    recognizer.adjust_for_ambient_noise(mic, duration=0.05)
+                    audio = recognizer.listen(mic)
+                    timetable = recognizer.recognize_google(audio, language="it-IT")
+                    curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
+                    call_to_text.write(f'[{curr_t}] User:  {timetable}')
+                    call_to_text.write("\n")
+                    timetable = ''.join(c for c in timetable if c.isdigit())
+                    ans = "Se il suo gestore alle " + timetable + " è libero, fisso un appuntamento a suo nome.  C'è altro che posso fare per lei?"
+                    speak(ans)
+                    infos[6] = 'Yes'
+                    done = True
+            
+            except speech_recognition.UnknownValueError:
+                recognizer = speech_recognition.Recognizer()
+                speak('Non ho capito, mi dispiace')
+    else:
+        speak('Gentile signor ' + infos[1]  + ',quando desidera fissare un appuntamento col suo gestore?')
+        done = False
+        while not done:
+            try:
+                with speech_recognition.Microphone(device_index=1) as mic:
+
+                    recognizer.adjust_for_ambient_noise(mic, duration=0.05)
+                    audio = recognizer.listen(mic)
+                    timetable = recognizer.recognize_google(audio, language="it-IT")
+                    curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
+                    call_to_text.write(f'[{curr_t}] User:  {timetable}')
+                    call_to_text.write("\n")
+                    timetable = ''.join(c for c in timetable if c.isdigit())
+                    ans = "Se il suo gestore alle " + timetable + " è libero, fisso un appuntamento a suo nome.  C'è altro che posso fare per lei?"
+                    speak(ans)
+                    infos[6] = 'Yes'
+                    done = True
+            
+            except speech_recognition.UnknownValueError:
+                recognizer = speech_recognition.Recognizer()
+                speak('Non ho capito, mi dispiace')
 
 def login_issue():
     global id_name,dob, infos, recognizer, t

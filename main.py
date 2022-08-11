@@ -368,34 +368,37 @@ input = input()
 
 t = time.time()
 speak('Buongiorno sono futura, come posso aiutarla?')
-
 while True:
     try:
-        
-        with speech_recognition.Microphone(device_index=1) as mic:
-            
-            if keyboard.is_pressed('q'):
-                quit()
+        while True:
+            try:
+                
+                with speech_recognition.Microphone(device_index=1) as mic:
+                    
+                    if keyboard.is_pressed('q'):
+                        quit()
 
-            recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-            audio = recognizer.listen(mic)
-            # print(type(audio))
-            
-            message = recognizer.recognize_google(audio, language="it-IT")
-            curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
-            call_to_text.write(f'[{curr_t}] User:  {message}')
-            call_to_text.write("\n")
+                    recognizer.adjust_for_ambient_noise(mic, duration=0.05)
+                    audio = recognizer.listen(mic)
+                    # print(type(audio))
+                    
+                    message = recognizer.recognize_google(audio, language="it-IT")
+                    curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
+                    call_to_text.write(f'[{curr_t}] User:  {message}')
+                    call_to_text.write("\n")
 
-            message = message.lower()
-            print(message)
+                    message = message.lower()
+                    print(message)
 
-        assistant.request(message)
+                assistant.request(message)
 
-    except speech_recognition.UnknownValueError:
-        if keyboard.is_pressed('q'):
-                quit()
+            except speech_recognition.UnknownValueError:
+                if keyboard.is_pressed('q'):
+                        quit()
 
-        time.sleep(3)
-        speak("Se ha detto qualcosa non l'ho sentita, puo' ripetere?")
-        recognizer = speech_recognition.Recognizer()
+                time.sleep(3)
+                speak("Se ha detto qualcosa non l'ho sentita, puo' ripetere?")
+                recognizer = speech_recognition.Recognizer()
 
+    except:
+        quit()

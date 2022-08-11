@@ -334,7 +334,7 @@ def timetables():
 def none():
     global id_name,dob, infos
     infos[12] = 'Yes'
-    speak("Non sono in grado di aiutarti, c'è altro che posso fare per te?")
+    speak("Non sono in grado di aiutarti, c'è altro che posso fare per lei?")
 
 
 def job_ended ():
@@ -372,6 +372,7 @@ while True:
     try:
         while True:
             try:
+
                 
                 with speech_recognition.Microphone(device_index=1) as mic:
                     

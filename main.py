@@ -1,6 +1,7 @@
 from email import message
 from email.mime import audio
-from neuralintents import GenericAssistant
+# from neuralintents import GenericAssistant
+from assistant import GenericAssistant
 import speech_recognition
 import sys
 from gtts import gTTS
@@ -32,8 +33,7 @@ def uniquify(path):
 # open a (new) file to write
 call_to_text = open(uniquify("transcriptions/tr.txt"), "w")
 db_csv = open("transcriptions/database.csv", 'a', newline='')
-# infos_keys = [Index, Name, DoB, change_pw, block_card, timetables, appointment, login_issue,card_enable, change_residence_data, claim_report, card_services_purchase
-# ]
+# infos_keys = Index,Name,DoB,change_pw,block_card,timetables,appointment,login_issue,card_enable,change_residence_data,claim_report,card_services_purchase,unknown
 infos = ['No']*13
 infos[0] = counter - 1 
 infos[1] = 'Unknown'

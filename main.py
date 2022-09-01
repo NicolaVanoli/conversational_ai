@@ -64,8 +64,9 @@ def hello():
 def quit():
     global id_name,dob, infos
     speak('Ciao e buona giornata')
-    db_csv.write(f'{str(infos)[1:-1]}\n')
+    db_csv.write(f'{str(infos)[0:-1]}\n')
     call_to_text.close()
+    time.sleep(5)
     sys.exit(0)
 
 def change_pw():
@@ -79,7 +80,7 @@ def change_pw():
             with speech_recognition.Microphone(device_index=1) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                audio = recognizer.listen(mic)
+                audio = recognizer.listen(mic,phrase_time_limit=6)
                 func_start = recognizer.recognize_google(audio, language="it-IT")
                 curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
                 call_to_text.write(f'[{curr_t}] User:  {func_start}')
@@ -107,12 +108,12 @@ def change_pw():
                 with speech_recognition.Microphone(device_index=1) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                    audio = recognizer.listen(mic)
+                    audio = recognizer.listen(mic,phrase_time_limit=6)
                     id_name = recognizer.recognize_google(audio, language="it-IT")
                     curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
                     call_to_text.write(f'[{curr_t}] User:  {id_name}')
                     call_to_text.write("\n")
-                    infos[0] = id_name
+                    infos[1] = id_name
 
                     done = True
             
@@ -129,7 +130,7 @@ def change_pw():
                 with speech_recognition.Microphone(device_index=1) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                    audio = recognizer.listen(mic)
+                    audio = recognizer.listen(mic,phrase_time_limit=6)
                     dob = recognizer.recognize_google(audio, language="it-IT")
                     curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
                     call_to_text.write(f'[{curr_t}] User:  {dob}')
@@ -152,7 +153,7 @@ def change_pw():
             with speech_recognition.Microphone(device_index=1) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                audio = recognizer.listen(mic)
+                audio = recognizer.listen(mic,phrase_time_limit=6)
                 tmp_code = recognizer.recognize_google(audio, language="it-IT")
                 curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
                 call_to_text.write(f'[{curr_t}] User:  {tmp_code}')
@@ -170,7 +171,11 @@ def change_pw():
 
 def block_card():
     global id_name,dob, infos, recognizer, t
-    speak('Se desidera bloccare la sua carta pronunci la sua data di nascita')
+    if id_name:
+        speak('Se desidera bloccare la sua carta pronunci la sua data di nascita')
+    else:
+        speak('Se desidera bloccare la sua carta pronunci il suo nome e la sua data di nascita')
+
 
     done = False
 
@@ -179,7 +184,7 @@ def block_card():
             with speech_recognition.Microphone(device_index=1) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                audio = recognizer.listen(mic)
+                audio = recognizer.listen(mic,phrase_time_limit=6)
                 id_code = recognizer.recognize_google(audio, language="it-IT")
                 curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
                 call_to_text.write(f'[{curr_t}] User:  {id_code}')
@@ -209,7 +214,7 @@ def appointment():
 
                     
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                    audio = recognizer.listen(mic)
+                    audio = recognizer.listen(mic,phrase_time_limit=6)
                     id_name = recognizer.recognize_google(audio, language="it-IT")
                     curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
 
@@ -232,7 +237,7 @@ def appointment():
                 with speech_recognition.Microphone(device_index=1) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                    audio = recognizer.listen(mic)
+                    audio = recognizer.listen(mic,phrase_time_limit=6)
                     timetable = recognizer.recognize_google(audio, language="it-IT")
                     curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
                     call_to_text.write(f'[{curr_t}] User:  {timetable}')
@@ -254,7 +259,7 @@ def appointment():
                 with speech_recognition.Microphone(device_index=1) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                    audio = recognizer.listen(mic)
+                    audio = recognizer.listen(mic,phrase_time_limit=6)
                     timetable = recognizer.recognize_google(audio, language="it-IT")
                     curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
                     call_to_text.write(f'[{curr_t}] User:  {timetable}')
@@ -283,7 +288,7 @@ def login_issue():
 
                     
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                    audio = recognizer.listen(mic)
+                    audio = recognizer.listen(mic,phrase_time_limit=6)
                     id_name = recognizer.recognize_google(audio, language="it-IT")
                     curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
 
@@ -380,7 +385,7 @@ while True:
                         quit()
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-                    audio = recognizer.listen(mic)
+                    audio = recognizer.listen(mic,phrase_time_limit=6)
                     # print(type(audio))
                     
                     message = recognizer.recognize_google(audio, language="it-IT")

@@ -11,14 +11,14 @@
       },
     
     {"tag": "block_card",
-      "patterns": ["ho smarrito la mia carta" , "ho perso la mia carta", 
-        "mi hanno rubato la mia carta", "devo bloccare la mia carta", 
-        "mi hanno rubato il portafoglio con dentro la carta", "mi hanno clonato la carta", " hanno i dati della mia carta" ],
+      "patterns": ["ho smarrito la mia carta / il bancomat" , "ho perso la mia carta / il bancomat", 
+        "mi hanno rubato la mia carta", "devo bloccare la mia carta / il bancomat", 
+        "mi hanno rubato il portafoglio con dentro la carta / il bancomat", "mi hanno clonato la carta / il bancomat", " hanno i dati della mia carta" ],
       "responses": [""]
       },
 
     {"tag": "timetables",
-      "patterns": ["la banca / l'ufficio è aperta?", "a che ora apre l'ufficio?"," a che ora siete aperti?","che orari fa la banca / l'ufficio?", "a che ora apre / chiude la banca / gli uffici?", "quando posso venire in banca?","la banca è aperta di sabato?"],
+      "patterns": ["la banca / filiale / l'ufficio è aperta?", "a che ora apre l'ufficio / la filiale?"," a che ora siete aperti?","che orari fa la banca / l'ufficio / la filiale?", "a che ora apre / chiude la banca / gli uffici?", "quando posso venire in banca / in filiale?","la banca è aperta di sabato?"],
       "responses": [""]
       },
   

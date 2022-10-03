@@ -64,7 +64,7 @@ def hello():
 def quit():
     global id_name,dob, infos
     speak('Ciao e buona giornata')
-    db_csv.write(f'{str(infos)[0:-1]}\n')
+    db_csv.write(f'{str(infos)[1:-1]}\n')
     call_to_text.close()
     time.sleep(5)
     sys.exit(0)
@@ -77,7 +77,7 @@ def change_pw():
 
     while not done:
         try:
-            with speech_recognition.Microphone(device_index=1) as mic:
+            with speech_recognition.Microphone(device_index=2) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -105,7 +105,7 @@ def change_pw():
         speak('Pronunci nome cognome')
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                     audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -127,7 +127,7 @@ def change_pw():
         speak('Pronunci la sua data di nascita')
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                     audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -150,7 +150,7 @@ def change_pw():
     while not done:
         # time.sleep(2)
         try:
-            with speech_recognition.Microphone(device_index=1) as mic:
+            with speech_recognition.Microphone(device_index=2) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -181,11 +181,14 @@ def block_card():
 
     while not done:
         try:
-            with speech_recognition.Microphone(device_index=1) as mic:
+            with speech_recognition.Microphone(device_index=2) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic,phrase_time_limit=6)
                 id_code = recognizer.recognize_google(audio, language="it-IT")
+                split_char = [i for i, c in enumerate(id_code) if c.isdigit()]
+                infos[0] = id_code[:split_char[0]]
+                infos[1] = id_code[split_char[0]:]
                 curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
                 call_to_text.write(f'[{curr_t}] User:  {id_code}')
                 call_to_text.write("\n")
@@ -210,7 +213,7 @@ def appointment():
 
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
@@ -234,7 +237,7 @@ def appointment():
         done = False
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                     audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -256,7 +259,7 @@ def appointment():
         done = False
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                     audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -284,7 +287,7 @@ def login_issue():
 
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
@@ -339,7 +342,7 @@ def timetables():
 def none():
     global id_name,dob, infos
     infos[12] = 'Yes'
-    speak("Non sono in grado di aiutarti, c'è altro che posso fare per lei?")
+    speak("Non sono in grado di aiutarti, chiedimi qualcosa a cui posso rispondere altrimenti, per reindirizzare la chiamata, dica desidero parlare con un operatore ")
 
 
 def job_ended ():
@@ -379,7 +382,7 @@ while True:
             try:
 
                 
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
                     
                     if keyboard.is_pressed('q'):
                         quit()
@@ -394,6 +397,10 @@ while True:
                     call_to_text.write("\n")
 
                     message = message.lower()
+                    print(message)
+                    if 'parlare con un operatore' in message or 'operatore' in message:
+                        print('ASSISTENZA OPERATORE')
+                        job_ended()
                     print(message)
 
                 assistant.request(message)

@@ -2,6 +2,7 @@ from email import message
 from email.mime import audio
 # from neuralintents import GenericAssistant
 from assistant import GenericAssistant
+from datetime import datetime
 import speech_recognition
 import sys
 from gtts import gTTS
@@ -14,7 +15,8 @@ import time
 import keyboard
 import sys
 
-
+t0 = time.time()
+today = datetime.now().strftime("%d-%b-%Y (%H:%M)")
 id_name = None
 dob = None
 counter = 1
@@ -35,6 +37,7 @@ call_to_text = open(uniquify("transcriptions/tr.txt"), "w")
 db_csv = open("transcriptions/database.csv", 'a', newline='')
 # infos_keys = Index,Name,DoB,change_pw,block_card,timetables,appointment,login_issue,card_enable,change_residence_data,claim_report,card_services_purchase,unknown
 infos = ['No']*13
+infos.append(today)
 infos[0] = counter - 1 
 infos[1] = 'Unknown'
 infos[2] = 'Unknown'
@@ -63,6 +66,8 @@ def hello():
 
 def quit():
     global id_name,dob, infos
+    t1 = time.time()-t0
+    infos.append(int(t1))
     speak('Ciao e buona giornata')
     db_csv.write(f'{str(infos)[1:-1]}\n')
     call_to_text.close()

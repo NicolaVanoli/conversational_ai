@@ -8,10 +8,8 @@ for i, el in enumerate(sr.Microphone.list_microphone_names()):
 recognizer = sr.Recognizer()
 print('qusdadf')
 
-with sr.Microphone(device_index=33) as mic:
-            print('quadf')
+with sr.Microphone(device_index=1) as mic:
             recognizer.adjust_for_ambient_noise(mic, duration=0.05)
-            print('qua')
             audio = recognizer.listen(mic)
             # print(type(audio))
             print(type(audio))

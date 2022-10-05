@@ -9,7 +9,7 @@ RECORD_SEC = 10        # [sec]. duration recording audio.
 
     
 
-
+print(sc.get_microphone(id=str(sc.default_speaker().name), include_loopback=True))
 with sc.get_microphone(id=str(sc.default_speaker().name), include_loopback=True).recorder(samplerate=SAMPLE_RATE) as mic:
     # record audio with loopback from default speaker.
     data = mic.record(numframes=SAMPLE_RATE*RECORD_SEC)
@@ -19,4 +19,4 @@ with sc.get_microphone(id=str(sc.default_speaker().name), include_loopback=True)
     r = speech_recognition.Recognizer()
     with speech_recognition.WavFile("customer.wav") as source:              # use "test.wav" as the audio source
         audio = r.record(source)                        # extract audio data from the file
-        print(r.recognize_google(audio,language="it-IT"))   # recognize speech using Google Speech Recognition
+        # print(r.recognize_google(audio,language="it-IT"))   # recognize speech using Google Speech Recognition

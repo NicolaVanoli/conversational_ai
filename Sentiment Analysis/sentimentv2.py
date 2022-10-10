@@ -1,15 +1,23 @@
+'''
+NOT PERFORMING VERY WELL
+
+'''
+
+
+
+
 import torch
 from torch import TensorType, nn  
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 # Load the tokenizer
-tokenizer = AutoTokenizer.from_pretrained("neuraly/bert-base-italian-cased-sentiment")
+tokenizer = AutoTokenizer.from_pretrained("MilaNLProc/feel-it-italian-sentiment")
 
 # Load the model, use .cuda() to load it on the GPU
-model = AutoModelForSequenceClassification.from_pretrained("neuraly/bert-base-italian-cased-sentiment")
+model = AutoModelForSequenceClassification.from_pretrained("MilaNLProc/feel-it-italian-sentiment")
 
-sentence = "non mi piace andare al cinema, lo odio"
-input_ids = tokenizer.encode(sentence, add_special_tokens=True)
+sentence = "non sono soddisfatto"
+input_ids = tokenizer.encode(sentence)
 
 # Create tensor, use .cuda() to transfer the tensor to GPU
 tensor = torch.tensor(input_ids).long()
@@ -27,6 +35,6 @@ logits = logits.squeeze(0)
 proba = nn.functional.softmax(logits, dim=0)
 
 # Unpack the tensor to obtain negative, neutral and positive probabilities
-negative, neutral, positive = proba
+positive, negative = proba
 print(sentence)
-print(f'Positive: {round(float(positive),3)}\nNeutral: {round(float(neutral),3)} \nNegative: {round(float(negative),3)}')
+print(f'Positive: {round(float(positive),3)} \nNegative: {round(float(negative),3)}')

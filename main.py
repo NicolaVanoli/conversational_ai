@@ -1,7 +1,7 @@
 from email import message
 from email.mime import audio
 # from neuralintents import GenericAssistant
-from assistant import GenericAssistant
+from src.assistant import GenericAssistant
 from datetime import datetime
 import speech_recognition
 import sys

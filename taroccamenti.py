@@ -1,18 +1,10 @@
-import json
-import csv
+import pandas as pd
+df= pd.read_csv('testtest.csv')
 
+from sklearn.model_selection import train_test_split
 
-with open('intents_gtts.json', encoding='utf-8') as fh:
-    data = json.load(fh)
+train, test = train_test_split(df, test_size=0.2)
 
-
-print(len(data['intents']))
-
-with open('testtessdft.csv', 'w', encoding='UTF8') as f:
-    
-    writer = csv.writer(f, lineterminator = '\n')
-    writer.writerow(['text','intent'])
-    for el in data['intents']:
-        for pattern in el['patterns']:
-            writer.writerow([pattern,el['tag']])
+train.to_csv('train_ita.csv', index = False)
+test.to_csv('test_ita.csv', index = False)
 

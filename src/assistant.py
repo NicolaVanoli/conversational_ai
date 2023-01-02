@@ -173,7 +173,7 @@ class GenericAssistant(IAssistant):
 
         #########
 
-        ERROR_THRESHOLD = 0.99
+        ERROR_THRESHOLD = 0.85
         results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
 
         results.sort(key=lambda x: x[1], reverse=True)

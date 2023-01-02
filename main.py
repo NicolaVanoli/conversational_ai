@@ -29,7 +29,7 @@ def uniquify(path):
     while os.path.exists(path):
         path = filename + "_" + str(counter)  + extension
         counter += 1
-
+    # print(path)
     return path
 
 # open a (new) file to write
@@ -70,6 +70,7 @@ def quit():
     infos.append(int(t1))
     speak('Ciao e buona giornata')
     db_csv.write(f'{str(infos)[1:-1]}\n')
+    time.sleep(5)
     call_to_text.close()
     time.sleep(5)
     sys.exit(0)
@@ -193,7 +194,8 @@ def block_card():
                 id_code = recognizer.recognize_google(audio, language="it-IT")
                 split_char = [i for i, c in enumerate(id_code) if c.isdigit()]
                 infos[0] = id_code[:split_char[0]]
-                infos[1] = id_code[split_char[0]:]
+                if not id_name:
+                    infos[1] = id_code[split_char[0]:]
                 curr_t = time.strftime("%H:%M:%S", time.gmtime(int(time.time() - t)))
                 call_to_text.write(f'[{curr_t}] User:  {id_code}')
                 call_to_text.write("\n")
@@ -232,7 +234,7 @@ def appointment():
                     infos[1] = id_name
                     #TO-DO: inviare nuova password con codice id_code
                     
-                    speak('Piacere signor ' + id_name  + ',quando desidera fissare un appuntamento col suo gestore?')
+                    speak('Quando desidera fissare un appuntamento col suo gestore?')
                     done = True
             
             except speech_recognition.UnknownValueError:
@@ -260,7 +262,7 @@ def appointment():
                 recognizer = speech_recognition.Recognizer()
                 speak('Non ho capito, mi dispiace')
     else:
-        speak('Gentile signor ' + infos[1]  + ',quando desidera fissare un appuntamento col suo gestore?')
+        speak('Gentile signore,quando desidera fissare un appuntamento col suo gestore?')
         done = False
         while not done:
             try:
@@ -355,8 +357,8 @@ def job_ended ():
     quit()
 
 mappings = {
-    'card_services_purchase': card_services_purchase,
-    'claim_report': claim_report,
+    'card_services_purchase': card_services_purchase, 
+    'claim_report': claim_report, 
     'change_residence_data': change_residence_data,
     'card_enable': card_enable,
     'login_issue': login_issue,

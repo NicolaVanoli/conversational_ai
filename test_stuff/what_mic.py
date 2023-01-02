@@ -14,4 +14,4 @@ for i, el in enumerate(sr.Microphone.list_microphone_names()):
 #             # print(type(audio))
 #             print(type(audio))
 #             message = recognizer.recognize_google(audio, language="it-IT")
-#             print(message)
+#             print(message) 

@@ -28,7 +28,7 @@
       },
 
     {"tag": "login_issue",
-      "patterns": ["non riesco ad accedere al sito", "ho problemi di accesso", "non riesco ad entrare in relax banking","non riesco a fare il login","non riesco ad entrare nel mio account"],
+      "patterns": ["ho il conto corrente bloccato","ho la linea bloccata", "ho l'accesso all'internet banking bloccato","non riesco ad accedere al sito", "ho problemi di accesso", "non riesco ad entrare in relax banking","non riesco a fare il login","non riesco ad entrare nel mio account"],
       "responses": [""]
       },
 

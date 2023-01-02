@@ -45,4 +45,5 @@ allWordExceptStopDist = nltk.FreqDist(w.lower() for w in cleanWorlds)
 
 
 mostCommon= allWordDist.most_common(10)
-print(mostCommon)
+for word in mostCommon:
+	print(word)

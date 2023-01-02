@@ -5,8 +5,8 @@
 logs1/
 logs_large/
 en_intent_model/
-_pychace_/
+*/_pychace_/
 assemblyai-and-python-in-5-minutes/
 taroccamenti.py
 Intent_classification/
-
+futura_website/

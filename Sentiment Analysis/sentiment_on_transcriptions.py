@@ -40,7 +40,7 @@ def predict_sentence(sentence: str) -> dict:
     }
 
 
-with open(os.path.dirname(__file__) +'/../transcriptions/tr_22.txt') as f:
+with open(os.path.dirname(__file__) +'/../transcriptions/tr_54.txt') as f:
     lines = f.readlines()
 
 pos = []
@@ -60,4 +60,4 @@ pos = sum(pos)/len(pos)
 neu = sum(neu)/len(neu)
 neg = sum(neg)/len(neg)
 
-print(f'FINAL\npositiv{pos}\nneutral{neu}\nnegative{neg}')
+print(f'FINAL\npositive {pos}\nneutral {neu}\nnegative {neg}')

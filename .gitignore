@@ -2,6 +2,7 @@
 *.wav
 *.mp3
 *.csv
+*.jsonl
 logs1/
 logs_large/
 en_intent_model/

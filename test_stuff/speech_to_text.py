@@ -39,7 +39,7 @@ if is_admin():
     pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization@2.1",use_auth_token="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")
 
     # 4. apply pretrained pipeline
-    diarization = pipeline("C:/Users/nicol/Desktop/Personal/conversational_ai/customer.wav", num_speakers=2)
+    diarization = pipeline("C:/Users/nicol/Desktop/Personal/conversational_ai/test_event.wav", num_speakers=2)
     # with open("./conversational_ai/audio.rttm", "w") as rttm:
     #     diarization.write_rttm(rttm)
     # 5. print the result

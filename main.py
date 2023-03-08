@@ -20,6 +20,8 @@ today = datetime.now().strftime("%d-%b-%Y (%H:%M)")
 id_name = None
 dob = None
 counter = 1
+
+requested_functionalities = []
 # create and open a new file named differently from the previous
 def uniquify(path):
     global id_name,dob, counter
@@ -65,17 +67,21 @@ def hello():
     
 
 def quit():
-    global id_name,dob, infos
+    global id_name,dob, infos, requested_functionalities
     t1 = time.time()-t0
     infos.append(int(t1))
     speak('Ciao e buona giornata')
     db_csv.write(f'{str(infos)[1:-1]}\n')
+    call_to_text.write('\n\nREQUESTED FUNCIONALITIES: ')
+    for func in requested_functionalities:
+        call_to_text.write(func + ', ')
     time.sleep(5)
     call_to_text.close()
     time.sleep(5)
     sys.exit(0)
 
 def change_pw():
+    requested_functionalities.append(change_pw)
     global id_name,dob, infos, recognizer, t
     speak('Per cambiare password, dica "sì desidero cambiare la password" Altrimenti dica "no, interrompi"')
     # speak('Altrimenti dica "no, interrompi"')
@@ -83,7 +89,7 @@ def change_pw():
 
     while not done:
         try:
-            with speech_recognition.Microphone(device_index=1) as mic:
+            with speech_recognition.Microphone(device_index=2) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -111,7 +117,7 @@ def change_pw():
         speak('Pronunci nome cognome')
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                     audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -133,7 +139,7 @@ def change_pw():
         speak('Pronunci la sua data di nascita')
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                     audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -156,7 +162,7 @@ def change_pw():
     while not done:
         # time.sleep(2)
         try:
-            with speech_recognition.Microphone(device_index=1) as mic:
+            with speech_recognition.Microphone(device_index=2) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -176,6 +182,7 @@ def change_pw():
             speak('Non ho capito, può ripetere?')
 
 def block_card():
+    requested_functionalities.append('block_card')
     global id_name,dob, infos, recognizer, t
     if id_name:
         speak('Se desidera bloccare la sua carta pronunci la sua data di nascita')
@@ -187,7 +194,7 @@ def block_card():
 
     while not done:
         try:
-            with speech_recognition.Microphone(device_index=1) as mic:
+            with speech_recognition.Microphone(device_index=2) as mic:
 
                 recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                 audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -212,6 +219,7 @@ def block_card():
 
 
 def appointment():
+    requested_functionalities.append('appointment')
     global id_name,dob, infos, recognizer, t
     if infos[1] == 'Unknown':
         speak('Prima di fissare un appuntamento ci dica il suo nome e cognome per indirizzarla al suo gestore')
@@ -220,7 +228,7 @@ def appointment():
 
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
@@ -244,7 +252,7 @@ def appointment():
         done = False
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                     audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -266,7 +274,7 @@ def appointment():
         done = False
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
                     audio = recognizer.listen(mic,phrase_time_limit=6)
@@ -275,7 +283,7 @@ def appointment():
                     call_to_text.write(f'[{curr_t}] User:  {timetable}')
                     call_to_text.write("\n")
                     timetable = ''.join(c for c in timetable if c.isdigit())
-                    ans = "Se il suo gestore alle " + timetable + " è libero, fisso un appuntamento a suo nome.  C'è altro che posso fare per lei?"
+                    ans = "Se il suo gestore è libero, fisso un appuntamento a suo nome.  C'è altro che posso fare per lei?"
                     speak(ans)
                     infos[6] = 'Yes'
                     done = True
@@ -285,6 +293,7 @@ def appointment():
                 speak('Non ho capito, mi dispiace')
 
 def login_issue():
+    requested_functionalities.append('login_issue')
     global id_name,dob, infos, recognizer, t
     speak('Se ha problemi di accesso mi dia un attimo per controllare lo stato della sua linea.')
     if id_name is None:
@@ -294,7 +303,7 @@ def login_issue():
 
         while not done:
             try:
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
 
                     
                     recognizer.adjust_for_ambient_noise(mic, duration=0.05)
@@ -321,27 +330,32 @@ def login_issue():
     change_pw()
 
 def card_services_purchase():
+    requested_functionalities.append('card_services_purchase')
     global id_name,dob, infos
     infos[11] = 'Yes'
     speak("Per acquistare un servizio seguire le procedure. C'è altro che posso fare per lei?")
 
 def claim_report():
+    requested_functionalities.append('claim_report')
     global id_name,dob, infos
     infos[10] = 'Yes'
     speak("Per denunciare un sinistro seguire le procedure. C'è altro che posso fare per lei?")
 
 def change_residence_data():
+    requested_functionalities.append('change_residence_data')
     global id_name,dob, infos
     infos[9] = 'Yes'
     speak("Per cambiare i dati sulla residenza seguire le procedure. C'è altro che posso fare per lei?")
 
 def card_enable():
+    requested_functionalities.append('card_enable')
     global id_name,dob, infos
     infos[8] = 'Yes'
     speak("Per attivare la carta seguire le procedure. C'è altro che posso fare per lei?")
 
 
 def timetables():
+    requested_functionalities.append('timetables')
     global id_name,dob, infos
     infos[5] = 'Yes'
     speak("La banca è aperta dal lunedì al venerdì dalle 8:20 alle 19:20. C'è altro che posso fare per lei?")
@@ -389,7 +403,7 @@ while True:
             try:
 
                 
-                with speech_recognition.Microphone(device_index=1) as mic:
+                with speech_recognition.Microphone(device_index=2) as mic:
                     
                     if keyboard.is_pressed('q'):
                         quit()

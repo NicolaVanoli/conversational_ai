@@ -1,0 +1,33 @@
+.nav{
+    display:flex;
+    justify-content: center;
+    background-color: rgba(37, 57, 95, 0.425);
+    padding: 20px;
+    margin: 0;
+    color: rgba(177, 190, 204, 0.699);
+}
+
+.nav-item {
+    background-color: transparent; 
+    margin-right: 20px;
+    margin-left: 20px;
+    list-style: none;
+    font-size: 40px;
+    font-family: "Lato", sans-serif;
+    cursor: pointer;
+}
+
+.nav-item>a:hover {
+    color: rgb(255, 255, 255);
+}
+
+#title {
+    color: #1ac0bd;
+    display:flex;
+    justify-content: center;
+    font-size: 90px;
+    font-style: "italic";
+    text-shadow: 2px 2px 5px rgb(187, 197, 195);
+    font-family: "Lato", sans-serif;
+    line-height: 1.8;
+}

@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  .team-members {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgb(0, 0, 0);
+    border-radius: 5px;
+  }
+  .team-member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 16px;
+    padding: px;
+    background-color: rgb(252, 251, 251);
+    box-shadow: 0 4px 8px 0 rgb(0, 0, 0);
+    border-radius: 5px;
+  }
+  .team-member img {
+    width: 560px;
+    height: 480px;
+    object-fit: cover;
+    margin: 30px 0;
+  }
+  .team-member h3 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: bold;
+    color: rgb(212, 206, 206);
+  }
+  .team-member p {
+    margin: 5px 0;
+    font-size: 24px;
+    color: rgb(228, 222, 222);
+  }

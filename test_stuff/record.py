@@ -2,7 +2,7 @@ import soundcard as sc
 import soundfile as speech
 import speech_recognition 
 
-OUTPUT_FILE_NAME = "event_03_02_Giovannini.wav"    # file name.
+OUTPUT_FILE_NAME = "event_Family_offices.wav"    # file name.
 SAMPLE_RATE = 48000              # [Hz]. sampling rate.
 RECORD_SEC = 3600        # [sec]. duration recording audio.
 

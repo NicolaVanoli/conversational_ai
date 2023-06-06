@@ -7,13 +7,13 @@ import numpy as np
 
 import os
 # os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
-wav_file = 'event_10_01.wav'
+wav_file = 'event_Family_offices.wav'
 pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization@2.1",
                                     use_auth_token="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")
 
 
 # apply the pipeline to an audio file
-diarization = pipeline(wav_file, num_speakers=2)
+diarization = pipeline(wav_file, num_speakers=15)
 
 # dump the diarization output to disk using RTTM format
 with open("tmp_audio.rttm", "w") as rttm:
@@ -85,18 +85,17 @@ def my_function():
 
     # print(probs)
     print(f"Detected language: {max(probs, key=probs.get)}")
-    if max(probs, key=probs.get) == 'it':
+    # if max(probs, key=probs.get) == 'it' or max(probs, key=probs.get) == 'en':
 
-
-        # decode the audio
-        options = whisper.DecodingOptions()
-        result = whisper.decode(model, mel, options)
-        
-        # Do something with the audio data
+    # decode the audio
+    options = whisper.DecodingOptions(language='it' )
+    result = whisper.decode(model, mel, options)
+    
+    # Do something with the audio data
     
 
-        return result.text
-    else: return 'NOT ITALIAN'
+    return result.text
+    # else: return 'Unknown language'
 
 
 
@@ -125,6 +124,6 @@ call_to_text = open(uniquify("transcriptions/tr.txt"), "w")
 
 for el in results: 
     call_to_text.write(f"{el['start']}->{el['end']}, {el['speaker']}: {el['transcript']}\n")
-    print(f"{el['start']}->{el['end']}, {el['speaker']}: {el['transcript']} \n")
+    print(f"{el['transcript']} \n")
 
 call_to_text.close()

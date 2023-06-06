@@ -8,26 +8,18 @@ n = 436
 #     existing_data = [json.loads(line) for line in existing_it]
 
 translator= Translator()
-with open("banking77_prepared_valid.jsonl", "r") as f:
-    with open("banking77_prepared_valid_it.jsonl", "w") as new_f:
-        # for old_data in existing_data:
-
-
-        #     json.dump(old_data, new_f,  ensure_ascii=False)
-        #     new_f.write("\n")
-        # del existing_data
-        with tqdm(desc='Building Test Set', total=9003-n) as progress:
+with open("transcriptions/tr_79.txt", "r") as f:
+    with open("en_transcription.txt", "w") as new_f:
+       
+        with tqdm(desc='Building Test Set', total=222) as progress:
             for index,line in enumerate(f):
                 try:
-                    if index > 56:
-                        line = json.loads(line)
-                        data = line['prompt'].replace('\n\n###\n\n','')
-                        print(data)
-                        translation = translator.translate(data, dest='it')
-                        line['prompt'] = str(translation.text) + "\n\n###\n"
-                        json.dump(line, new_f, ensure_ascii=False)
-                        new_f.write("\n")
-                        print(line)
+                    if index >= 0: 
+                        print(line.split(':')[1])
+                        
+                        translation = translator.translate(line.split(':')[1], dest='en')
+                        print(translation.text)
+                        new_f.write(f"{line.split(':')[0]}: {translation.text}\n")
                         progress.update(1)
                         print('\n')
                 except:

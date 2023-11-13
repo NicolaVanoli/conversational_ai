@@ -36,10 +36,10 @@ def is_admin():
 from pyannote.audio import Pipeline
 if is_admin():
 
-    pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization@2.1",use_auth_token="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")
+    pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization@2.1",use_auth_token="")
 
     # 4. apply pretrained pipeline
-    diarization = pipeline("C:/Users/nicol/Desktop/Personal/conversational_ai/event_Family_offices.wav", num_speakers=2)
+    diarization = pipeline("C:/Users/nicol/Desktop/Personal/conversational_ai/new/positive_short.mp3", num_speakers=2)
     # with open("./conversational_ai/audio.rttm", "w") as rttm:
     #     diarization.write_rttm(rttm)
     # 5. print the result

@@ -64,7 +64,7 @@ def get_paragraphs(polling_endpoint, header):
 
     return paragraphs
 
-api_key = 'd5873d5d3d694e9d879d0b6bc7351244'
+api_key = ''
 
 header = {
 	'authorization': api_key,
